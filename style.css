@@ -1,0 +1,17 @@
+.screen > input{
+  size: 100;
+}
+.button-container {
+  width: 300px;
+  background: gray;
+  overflow-y: auto;
+}
+
+.button-container > button {
+  width: 100px;
+  height: 100px;
+  float: left;
+  background: lightgray;
+  margin 15px;
+  font-size: 25px;
+}
