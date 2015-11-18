@@ -25,4 +25,10 @@ function Queue() {
 	this.peek = function() {
 		return this.q[this.first];
 	}
+
+	this.print = function() {
+		this.q.forEach(function(val) {
+			console.log(val);
+		});
+	}
 };

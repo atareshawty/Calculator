@@ -27,7 +27,9 @@ function buttonEvents(sourceElement, targetElement) {
 
 function evaluateExpression(expression) {
   var tokens = tokenizeExpression(expression);
-  return parseExpression(tokens);
+  var answer = parseExpression(tokens);
+  console.log(answer);
+  return answer;
 }
 
 /**
@@ -44,38 +46,47 @@ function tokenizeExpression(expression) {
 }
 
 function parseExpression(tokens) {
-  var expression = parseTerm(tokens);
-  var possibleOp;
-  if (tokens.length > 0) {
-    possibleOp = tokens.dequeue();
+  console.log('From parseExpression: tokens = ');
+  tokens.print();
+  var expression = parseTerm(tokens), possibleOp;
+  if (tokens.length() > 0) {
+    console.log('From parseExpression inside if: tokens = ');
+    tokens.print();
+    possibleOp = tokens.peek();
     if (possibleOp === '+') {
+      tokens.dequeue();
       expression += parseTerm(tokens);
     } else if (possibleOp === '-') {
+      tokens.dequeue();
       expression -= parseTerm(tokens);
-    } else {
-      alert('Invalid Input! Try again');
     }
   }
   return expression;
 }
 
 function parseTerm(tokens) {
+  console.log('From parseTerm: tokens = ')
+  tokens.print();
   var term = parseFactor(tokens);
   var possibleOp;
-  if (tokens.length > 0) {
-    possibleOp = tokens.dequeue();
+  if (tokens.length() > 0) {
+    console.log('From parseTerm inside if: tokens = ');
+    tokens.print();
+    possibleOp = tokens.peek();
     if (possibleOp === '*') {
+      tokens.dequeue();
       term *= parseFactor(tokens);
     } else if (possibleOp === '/') {
+      tokens.dequeue();
       term /= parseFactor(tokens);
-    } else {
-      alert('Invalid Input! Try again');
     }
   }
   return term;
 }
 
 function parseFactor(tokens) {
+  console.log('From parseFactor: tokens = ');
+  tokens.print();
   var token = tokens.peek(), total = 0;
   if (token === '(') {
     tokens.dequeue();
@@ -88,8 +99,10 @@ function parseFactor(tokens) {
 }
 
 function parseDigitSeq(tokens) {
+  console.log('From parseDigitSeq: tokens = ')
+  tokens.print();
   var digitSeq = [];
-  while (tokens.length > 0) {
+  while (tokens.length() > 0 && !isNaN(parseInt(tokens.peek()))) {
     digitSeq.push(tokens.dequeue());
   }
   return Number(digitSeq.join(''));
