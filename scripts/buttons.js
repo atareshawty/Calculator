@@ -27,7 +27,6 @@ function buttonEvents(sourceElement, targetElement) {
 
 function evaluateExpression(expression) {
   var tokens = tokenizeExpression(expression);
-  console.log(tokens);
   return parseExpression(tokens);
 }
 
@@ -45,5 +44,53 @@ function tokenizeExpression(expression) {
 }
 
 function parseExpression(tokens) {
-  return 0;
+  var expression = parseTerm(tokens);
+  var possibleOp;
+  if (tokens.length > 0) {
+    possibleOp = tokens.dequeue();
+    if (possibleOp === '+') {
+      expression += parseTerm(tokens);
+    } else if (possibleOp === '-') {
+      expression -= parseTerm(tokens);
+    } else {
+      alert('Invalid Input! Try again');
+    }
+  }
+  return expression;
+}
+
+function parseTerm(tokens) {
+  var term = parseFactor(tokens);
+  var possibleOp;
+  if (tokens.length > 0) {
+    possibleOp = tokens.dequeue();
+    if (possibleOp === '*') {
+      term *= parseFactor(tokens);
+    } else if (possibleOp === '/') {
+      term /= parseFactor(tokens);
+    } else {
+      alert('Invalid Input! Try again');
+    }
+  }
+  return term;
+}
+
+function parseFactor(tokens) {
+  var token = tokens.peek(), total = 0;
+  if (token === '(') {
+    tokens.dequeue();
+    total = parseExpression(tokens);
+    tokens.dequeue();
+  } else {
+    total = parseDigitSeq(tokens)
+  }
+  return total;
+}
+
+function parseDigitSeq(tokens) {
+  var digitSeq = [];
+  while (tokens.length > 0) {
+    digitSeq.push(tokens.dequeue());
+  }
+  return Number(digitSeq.join(''));
 }
