@@ -16,7 +16,7 @@ function buttonEvents(sourceElement, targetElement) {
         break;
       case '=':
         targetElement.text(evaluateExpression(elementText));
-        targetElement.text('');
+        sourceElement.text('');
         break;
       default:
         sourceElement.text(elementText + e.target.id);
@@ -32,29 +32,14 @@ function evaluateExpression(expression) {
 }
 
 /**
-  Tokenizes well formed expression. An expression is a string of numbers with '+' or '-' in between
+  Tokenizes well formed expression. An expression is defined in cfg.txt
   @param expression - expression string
-  @return array of terms in expression in order they appear
+  @return queue of tokens in expression in order they appear
 */
 function tokenizeExpression(expression) {
-  var tokens = [],length = expression.length, tokenBegin = 0, i = 0;
-  while (i < length) {
-    var currentChar = expression.charAt(i);
-    if (isNaN(parseInt(currentChar))) {
-      i++;
-      while (isNaN(parseInt(expression.charAt(i)))) {
-        i++;
-      }
-      tokens.push(expression.substring(tokenBegin, i));
-      tokenBegin = i;
-    } else {
-      i++;
-      while (!isNaN(parseInt(expression.charAt(i)))) {
-        i++;
-      }
-      tokens.push(Number(expression.substring(tokenBegin, i)));
-      tokenBegin = i;
-    }
+  var tokens = new Queue();
+  for (var i = 0; i < expression.length; i++) {
+    tokens.enqueue(expression.charAt(i));
   }
   return tokens;
 }
