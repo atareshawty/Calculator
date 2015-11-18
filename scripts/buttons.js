@@ -1,25 +1,28 @@
 $(document).ready(function() {
-  var screenInfo = $('.screen-container p');
+  var screenInfo = $('.expression-container p');
+  var answerScreen = $('.answer-container p');
+  answerScreen.text('Answers go here!');
   screenInfo.text('');
-  buttonEvents(screenInfo);
+  buttonEvents(screenInfo, answerScreen);
 });
 
 
-function buttonEvents(element) {
+function buttonEvents(sourceElement, targetElement) {
   $('.button-container button').on('click', function(e) {
-    var elementText = element.text();
+    var elementText = sourceElement.text();
     switch (e.target.id) {
       case 'clr':
-        element.text('');
+        sourceElement.text('');
         break;
       case '=':
-        element.text(evaluateExpression(elementText));
+        targetElement.text(evaluateExpression(elementText));
+        targetElement.text('');
         break;
       default:
-        element.text(elementText + e.target.id);
+        sourceElement.text(elementText + e.target.id);
         break;
     }
-  })
+  });
 }
 
 function evaluateExpression(expression) {
@@ -57,5 +60,5 @@ function tokenizeExpression(expression) {
 }
 
 function parseExpression(tokens) {
-  return 0
+  return 0;
 }

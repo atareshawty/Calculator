@@ -1,8 +1,21 @@
 .screen-container {
   width: 400px;
-  height: 100px;
+  height: 115px;
+  background: darkgray;
+}
+
+.expression-container {
+  width: 400px;
+  height: 50px;
   background: lightgray;
 }
+
+.answer-container {
+  width: 400px;
+  height: 50px;
+  background: lightgray;
+}
+
 .button-container {
   width: 400px;
   background: gray;
