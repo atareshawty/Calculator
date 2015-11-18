@@ -1,8 +1,10 @@
-.screen > input{
-  size: 100;
+.screen-container {
+  width: 400px;
+  height: 100px;
+  background: lightgray;
 }
 .button-container {
-  width: 300px;
+  width: 400px;
   background: gray;
   overflow-y: auto;
 }
@@ -14,4 +16,8 @@
   background: lightgray;
   margin 15px;
   font-size: 25px;
+}
+
+button:focus {
+    outline: none;
 }
