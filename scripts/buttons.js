@@ -63,6 +63,8 @@ function parseExpression(tokens) {
       expression -= parseTerm(tokens);
     }
   }
+  expression *= 100;
+  expression /= 100;  
   return expression;
 }
 
