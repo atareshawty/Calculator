@@ -4,7 +4,8 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="scripts/jquery-2.1.4.min.js"></script>
   <script src="scripts/queue.js"></script>
-  <script src="scripts/buttons.js"></script>
+  <script src="scripts/parse.js"></script>
+  <script src="scripts/ui.js"></script>
   <title>Calculator</title>
 </head>
 <body>
@@ -18,14 +19,14 @@
     </div>
   </div>
   <div class="button-container">
-    <button id="(">(</button>
-    <button id=")">)</button>
-    <button id="^">^</button>
-    <button id="/">/</button>
+    <button id="leftParen">(</button>
+    <button id="rightParen">)</button>
+    <button id="exp">^</button>
+    <button id="divide">/</button>
     <button id="7">7</button>
     <button id="8">8</button>
     <button id="9">9</button>
-    <button id="*">*</button>
+    <button id="times">*</button>
     <button id="4">4</button>
     <button id="5">5</button>
     <button id="6">6</button>
@@ -33,11 +34,11 @@
     <button id="1">1</button>
     <button id="2">2</button>
     <button id="3">3</button>
-    <button id="+">+</button>
+    <button id="plus">+</button>
     <button id="0">0</button>
-    <button id=".">.</button>
+    <button id="decimal">.</button>
     <button id="delete">delete</button>
-    <button id="=">=</button>
+    <button id="equals">=</button>
   </div>
   <p>**Only well formed expressions will be properly evaluated</p>
 </body>

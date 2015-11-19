@@ -1,30 +1,3 @@
-$(document).ready(function() {
-  var screenInfo = $('.expression-container p');
-  var answerScreen = $('.answer-container p');
-  answerScreen.text('Answers go here!');
-  screenInfo.text('');
-  buttonEvents(screenInfo, answerScreen);
-});
-
-
-function buttonEvents(sourceElement, targetElement) {
-  $('.button-container button').on('click', function(e) {
-    var elementText = sourceElement.text();
-    switch (e.target.id) {
-      case '=':
-        targetElement.text(evaluateExpression(elementText));
-        sourceElement.text('');
-        break;
-      case 'delete':
-        sourceElement.text(elementText.substring(0, elementText.length - 1));
-        break;
-      default:
-        sourceElement.text(elementText + e.target.id);
-        break;
-    }
-  });
-}
-
 function evaluateExpression(expression) {
   var tokens = tokenizeExpression(expression);
   return parseExpression(tokens);
@@ -49,9 +22,11 @@ function tokenizeExpression(expression) {
   @return evaluated expression based on {@tokens}
 */
 function parseExpression(tokens) {
-  var expression = parseTerm(tokens), possibleOp;
+  console.log('parseExpression:');
+  tokens.print();
+  var expression = parseTerm(tokens);
   if (tokens.length() > 0) {
-    possibleOp = tokens.peek();
+    var possibleOp = tokens.peek();
     if (possibleOp === '+') {
       tokens.dequeue();
       expression += parseTerm(tokens);
@@ -61,7 +36,8 @@ function parseExpression(tokens) {
     }
   }
   expression *= 100;
-  expression /= 100;  
+  expression /= 100;
+  console.log('end parseExpression');  
   return expression;
 }
 
@@ -71,28 +47,34 @@ function parseExpression(tokens) {
   @return evaluated term
 */
 function parseTerm(tokens) {
+  console.log('parseTerm: ');
+  tokens.print();
   var term = parseFactor(tokens);
-  var possibleOp;
   if (tokens.length() > 0) {
-    possibleOp = tokens.dequeue();
-    var factor = parseFactor(tokens);
+    var possibleOp = tokens.peek();
     switch (possibleOp) {
       case '*':
-        term *= factor;
+        tokens.dequeue();
+        term *= parseFactor(tokens);
         break;
       case '/':
-        term /= factor;
+        tokens.dequeue();
+        (factor === 0) ? alert('Don\'t divide by zero, you fool!') : null;
+        term /= parseFactor(tokens);
         break;
       case '%':
-        term %= factor;
+        tokens.dequeue();
+        term %= parseFactor(tokens);
         break;
       case '^':
-        term = Math.pow(term, factor);
+        tokens.dequeue();
+        term = Math.pow(term, parseFactor(tokens));
         break;
       default:
         break;
     }
   }
+  console.log('end parseTerm');
   return term;
 }
 
@@ -102,6 +84,8 @@ function parseTerm(tokens) {
   @return evaluated factor
 */
 function parseFactor(tokens) {
+  console.log('parseFactor: ');
+  tokens.print();
   var token = tokens.peek(), total = 0;
   if (token === '(') {
     tokens.dequeue();
@@ -110,6 +94,7 @@ function parseFactor(tokens) {
   } else {
     total = parseRealConst(tokens)
   }
+  console.log('end parseFactor');
   return total;
 }
 
@@ -119,13 +104,15 @@ function parseFactor(tokens) {
   @return value
 */
 function parseRealConst(tokens) {
-  var realConst;
-  realConst = parseDigitSeq(tokens);
+  console.log('parseRealConst: ');
+  tokens.print();
+  var realConst = parseDigitSeq(tokens);
   if (tokens.peek() === '.') {
     var decimal = tokens.dequeue();
     decimal += parseDigitSeq(tokens);
     realConst += parseFloat(decimal);
   }
+  console.log('end parseRealConst');
   return realConst;
 }
 
@@ -135,9 +122,12 @@ function parseRealConst(tokens) {
   @return number based on consecutive tokens
 */
 function parseDigitSeq(tokens) {
+  console.log('parseDigitSeq: ');
+  tokens.print();
   var digitSeq = [];
   while (tokens.length() > 0 && !isNaN(parseInt(tokens.peek()))) {
     digitSeq.push(tokens.dequeue());
   }
+  console.log('end parseDigitSeq');
   return Number(digitSeq.join(''));
 }
