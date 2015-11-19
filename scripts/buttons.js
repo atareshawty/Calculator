@@ -54,7 +54,6 @@ function tokenizeExpression(expression) {
 function parseExpression(tokens) {
   var expression = parseTerm(tokens), possibleOp;
   if (tokens.length() > 0) {
-    tokens.print();
     possibleOp = tokens.peek();
     if (possibleOp === '+') {
       tokens.dequeue();
@@ -83,6 +82,9 @@ function parseTerm(tokens) {
     } else if (possibleOp === '/') {
       tokens.dequeue();
       term /= parseFactor(tokens);
+    } else if (possibleOp === '%') {
+      tokens.dequeue();
+      term %= parseFactor(tokens);
     }
   }
   return term;
@@ -103,6 +105,22 @@ function parseFactor(tokens) {
     total = parseDigitSeq(tokens)
   }
   return total;
+}
+
+/**
+  Parses real const from queue of tokens. Reduces {@tokens}
+  @param queue of tokens
+  @return value
+*/
+function parseRealConst(tokens) {
+  var realConst = parseDigitSeq(tokens);
+  if (tokens.peek() === '.') {
+    var decimal = '.';
+    tokens.dequeue();
+    decimal += parseDigitSeq(tokens);
+    realConst = realConst + Number(decimal);
+  }
+  return realConst;
 }
 
 /**
