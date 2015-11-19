@@ -102,7 +102,7 @@ function parseFactor(tokens) {
     total = parseExpression(tokens);
     tokens.dequeue();
   } else {
-    total = parseDigitSeq(tokens)
+    total = parseRealConst(tokens)
   }
   return total;
 }
@@ -113,12 +113,12 @@ function parseFactor(tokens) {
   @return value
 */
 function parseRealConst(tokens) {
-  var realConst = parseDigitSeq(tokens);
+  var realConst;
+  realConst = parseDigitSeq(tokens);
   if (tokens.peek() === '.') {
-    var decimal = '.';
-    tokens.dequeue();
+    var decimal = tokens.dequeue();
     decimal += parseDigitSeq(tokens);
-    realConst = realConst + Number(decimal);
+    realConst += parseFloat(decimal);
   }
   return realConst;
 }
