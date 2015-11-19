@@ -52,45 +52,63 @@ function buttonEvents(sourceElement, targetElement) {
 */
 function keyboardEvents(source, target) {
   $(document).keypress(function(key) {
+    console.log(key.which);
     var keyPress = String.fromCharCode(key.which);
-    var idString = '#';
-    if (key.which === 13) {
-      idString += 'equals';
+    if (key.which === 13 || key.which === 8 || key.which === 46) {
+      pressEnterOrDelete(key.which);
     } else {
-      switch(keyPress) {
-        case '+':
-          idString += 'plus';
-          break;
-        case undefined:
-          idString += 'equals';
-          break;
-        case '.':
-          idString += 'decimal';
-          break;
-        case '=':
-          idString += 'equals';
-          break;
-        case '(':
-          idString += 'leftParen';
-          break;
-        case ')':
-          idString += 'rightParen';
-          break;
-        case '*':
-          idString += 'times';
-          break;
-        case '/':
-          idString += 'divide';
-          break;
-        case '^':
-          idString += 'exp';
-          break;
-        default:
-          idString += keyPress;
-          break;
-      }      
-    }
-    $(idString).trigger('click');
+      pressDigitOrOperator(keyPress);
+    }      
   });
 }
 
+function pressEnterOrDelete(value) {
+  var idString = '#';
+  switch(value) {
+    case 13:
+      idString += 'equals';
+      break;
+    case 8:
+      idString += 'delete';
+      break;
+    case 46:
+      idString += 'delete';
+      break;
+    default:
+      break;
+  }
+  $(idString).trigger('click');
+}
+function pressDigitOrOperator(keyPress) {
+  var idString = '#';
+  switch(keyPress) {
+    case '+':
+      idString += 'plus';
+      break;
+    case '.':
+      idString += 'decimal';
+      break;
+    case '=':
+      idString += 'equals';
+      break;
+    case '(':
+      idString += 'leftParen';
+      break;
+    case ')':
+      idString += 'rightParen';
+      break;
+    case '*':
+      idString += 'times';
+      break;
+    case '/':
+      idString += 'divide';
+      break;
+    case '^':
+      idString += 'exp';
+      break;
+    default:
+      idString += keyPress;
+      break;
+  }
+  $(idString).trigger('click');
+}
