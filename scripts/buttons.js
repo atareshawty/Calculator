@@ -11,9 +11,6 @@ function buttonEvents(sourceElement, targetElement) {
   $('.button-container button').on('click', function(e) {
     var elementText = sourceElement.text();
     switch (e.target.id) {
-      case 'clr':
-        sourceElement.text('');
-        break;
       case '=':
         targetElement.text(evaluateExpression(elementText));
         sourceElement.text('');
@@ -77,16 +74,23 @@ function parseTerm(tokens) {
   var term = parseFactor(tokens);
   var possibleOp;
   if (tokens.length() > 0) {
-    possibleOp = tokens.peek();
-    if (possibleOp === '*') {
-      tokens.dequeue();
-      term *= parseFactor(tokens);
-    } else if (possibleOp === '/') {
-      tokens.dequeue();
-      term /= parseFactor(tokens);
-    } else if (possibleOp === '%') {
-      tokens.dequeue();
-      term %= parseFactor(tokens);
+    possibleOp = tokens.dequeue();
+    var factor = parseFactor(tokens);
+    switch (possibleOp) {
+      case '*':
+        term *= factor;
+        break;
+      case '/':
+        term /= factor;
+        break;
+      case '%':
+        term %= factor;
+        break;
+      case '^':
+        term = Math.pow(term, factor);
+        break;
+      default:
+        break;
     }
   }
   return term;
