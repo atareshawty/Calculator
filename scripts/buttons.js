@@ -18,6 +18,9 @@ function buttonEvents(sourceElement, targetElement) {
         targetElement.text(evaluateExpression(elementText));
         sourceElement.text('');
         break;
+      case 'delete':
+        sourceElement.text(elementText.substring(0, elementText.length - 1));
+        break;
       default:
         sourceElement.text(elementText + e.target.id);
         break;
@@ -27,13 +30,11 @@ function buttonEvents(sourceElement, targetElement) {
 
 function evaluateExpression(expression) {
   var tokens = tokenizeExpression(expression);
-  var answer = parseExpression(tokens);
-  console.log(answer);
-  return answer;
+  return parseExpression(tokens);
 }
 
 /**
-  Tokenizes well formed expression. An expression is defined in cfg.txt
+  Tokenizes well formed expression.
   @param expression - expression string
   @return queue of tokens in expression in order they appear
 */
@@ -45,12 +46,14 @@ function tokenizeExpression(expression) {
   return tokens;
 }
 
+/**
+  Parses queue of tokens and returns expression. Reduces {@tokens}
+  @param tokens - queue of tokens
+  @return evaluated expression based on {@tokens}
+*/
 function parseExpression(tokens) {
-  console.log('From parseExpression: tokens = ');
-  tokens.print();
   var expression = parseTerm(tokens), possibleOp;
   if (tokens.length() > 0) {
-    console.log('From parseExpression inside if: tokens = ');
     tokens.print();
     possibleOp = tokens.peek();
     if (possibleOp === '+') {
@@ -64,14 +67,15 @@ function parseExpression(tokens) {
   return expression;
 }
 
+/**
+  Parses and returns term based on {@tokens}. Reduces {@tokens}
+  @param queue of tokens
+  @return evaluated term
+*/
 function parseTerm(tokens) {
-  console.log('From parseTerm: tokens = ')
-  tokens.print();
   var term = parseFactor(tokens);
   var possibleOp;
   if (tokens.length() > 0) {
-    console.log('From parseTerm inside if: tokens = ');
-    tokens.print();
     possibleOp = tokens.peek();
     if (possibleOp === '*') {
       tokens.dequeue();
@@ -84,9 +88,12 @@ function parseTerm(tokens) {
   return term;
 }
 
+/**
+  Parses factor from queue of tokens. Reduces {@tokens}
+  @param queue of tokens
+  @return evaluated factor
+*/
 function parseFactor(tokens) {
-  console.log('From parseFactor: tokens = ');
-  tokens.print();
   var token = tokens.peek(), total = 0;
   if (token === '(') {
     tokens.dequeue();
@@ -98,9 +105,12 @@ function parseFactor(tokens) {
   return total;
 }
 
+/**
+  Parses digit sequence. Reduces {@tokens}
+  @param queue of tokens
+  @return number based on consecutive tokens
+*/
 function parseDigitSeq(tokens) {
-  console.log('From parseDigitSeq: tokens = ')
-  tokens.print();
   var digitSeq = [];
   while (tokens.length() > 0 && !isNaN(parseInt(tokens.peek()))) {
     digitSeq.push(tokens.dequeue());
