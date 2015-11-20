@@ -22,8 +22,6 @@ function tokenizeExpression(expression) {
   @return evaluated expression based on {@tokens}
 */
 function parseExpression(tokens) {
-  console.log('parseExpression:');
-  tokens.print();
   var expression = parseTerm(tokens);
   if (tokens.length() > 0) {
     var possibleOp = tokens.peek();
@@ -37,7 +35,6 @@ function parseExpression(tokens) {
   }
   expression *= 100;
   expression /= 100;
-  console.log('end parseExpression');  
   return expression;
 }
 
@@ -47,8 +44,6 @@ function parseExpression(tokens) {
   @return evaluated term
 */
 function parseTerm(tokens) {
-  console.log('parseTerm: ');
-  tokens.print();
   var term = parseFactor(tokens);
   if (tokens.length() > 0) {
     var possibleOp = tokens.peek();
@@ -74,7 +69,6 @@ function parseTerm(tokens) {
         break;
     }
   }
-  console.log('end parseTerm');
   return term;
 }
 
@@ -84,8 +78,6 @@ function parseTerm(tokens) {
   @return evaluated factor
 */
 function parseFactor(tokens) {
-  console.log('parseFactor: ');
-  tokens.print();
   var token = tokens.peek(), total = 0;
   if (token === '(') {
     tokens.dequeue();
@@ -94,7 +86,6 @@ function parseFactor(tokens) {
   } else {
     total = parseRealConst(tokens)
   }
-  console.log('end parseFactor');
   return total;
 }
 
@@ -104,15 +95,12 @@ function parseFactor(tokens) {
   @return value
 */
 function parseRealConst(tokens) {
-  console.log('parseRealConst: ');
-  tokens.print();
   var realConst = parseDigitSeq(tokens);
   if (tokens.peek() === '.') {
     var decimal = tokens.dequeue();
     decimal += parseDigitSeq(tokens);
     realConst += parseFloat(decimal);
   }
-  console.log('end parseRealConst');
   return realConst;
 }
 
@@ -122,12 +110,9 @@ function parseRealConst(tokens) {
   @return number based on consecutive tokens
 */
 function parseDigitSeq(tokens) {
-  console.log('parseDigitSeq: ');
-  tokens.print();
   var digitSeq = [];
   while (tokens.length() > 0 && !isNaN(parseInt(tokens.peek()))) {
     digitSeq.push(tokens.dequeue());
   }
-  console.log('end parseDigitSeq');
   return Number(digitSeq.join(''));
 }

@@ -52,36 +52,34 @@ function buttonEvents(sourceElement, targetElement) {
 */
 function keyboardEvents(source, target) {
   $(document).keypress(function(key) {
-    console.log(key.which);
-    var keyPress = String.fromCharCode(key.which);
     if (key.which === 13 || key.which === 8 || key.which === 46) {
       pressEnterOrDelete(key.which);
+    } else if ((48 <= key.which && key.which <= 57)|| 96 <= key.which && key.which <= 105 ) {
+      pressDigit(key.which);
     } else {
-      pressDigitOrOperator(keyPress);
-    }      
+      pressOperator(key.which);
+    }  
   });
 }
 
-function pressEnterOrDelete(value) {
-  var idString = '#';
-  switch(value) {
+function pressEnterOrDelete(keyCode) {
+  switch(keyCode) {
     case 13:
-      idString += 'equals';
+      $('#equals').trigger('click');
       break;
     case 8:
-      idString += 'delete';
+      $('#delete').trigger('click');
       break;
     case 46:
-      idString += 'delete';
+      $('#delete').trigger('click');
       break;
     default:
       break;
   }
-  $(idString).trigger('click');
 }
-function pressDigitOrOperator(keyPress) {
+function pressOperator(keyCode) {
   var idString = '#';
-  switch(keyPress) {
+  switch(String.fromCharCode(keyCode)) {
     case '+':
       idString += 'plus';
       break;
@@ -107,8 +105,17 @@ function pressDigitOrOperator(keyPress) {
       idString += 'exp';
       break;
     default:
-      idString += keyPress;
+      idString += String.fromCharCode(keyCode);
       break;
   }
   $(idString).trigger('click');
+}
+
+function pressDigit(keyCode) {
+  var idString = '#' + (keyCode - 48);
+  $(idString).trigger('click');
+}
+
+function isOperator(keyCode) {
+  
 }
