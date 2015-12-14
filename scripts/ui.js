@@ -1,3 +1,4 @@
+/* global $ */
 $(document).ready(function() {
   var screenInfo = $('.expression-container p');
   var answerScreen = $('.answer-container p');
@@ -13,7 +14,7 @@ function buttonEvents(sourceElement, targetElement) {
     var elementText = sourceElement.text();
     switch (e.target.id) {
       case 'equals':
-        targetElement.text(evaluateExpression(elementText));
+        targetElement.text(eval(elementText));
         sourceElement.text('');
         break;
       case 'delete':
@@ -114,8 +115,4 @@ function pressOperator(keyCode) {
 function pressDigit(keyCode) {
   var idString = '#' + (keyCode - 48);
   $(idString).trigger('click');
-}
-
-function isOperator(keyCode) {
-  
 }
